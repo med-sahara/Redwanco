@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+
+<!--	Zones       -->
+
+		 <record id="view_zones_tree" model="ir.ui.view">
+            <field name="name">sale.zone.tree</field>
+            <field name="model">sale.zone</field>
+            <field name="priority">4</field>
+            <field name="arch" type="xml">
+                <tree string="Zones">
+                    <field name="name"/>
+                    <field name="code"/>
+                </tree>
+            </field>
+        </record>
+
+		<record id="pre_sale_zone_form" model="ir.ui.view">
+            <field name="name">sale.zone.form</field>
+            <field name="model">sale.zone</field>
+            <field name="arch" type="xml">
+                <form string="Zones">
+					<sheet>
+                      <div class="oe_button_box" name="button_box">
+						  <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                        </button>
+                        </div>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only" string="Name"/>
+                            <h1>
+                                <field name="name" placeholder="Name of the Zone..."/>
+                            </h1>
+                        </div>
+						<group>
+							<group>
+								<field name="code"/>
+							</group>
+                    	</group>
+                    </sheet>
+              </form>
+            </field>
+        </record>
+
+        <record id="pre_sale_menu_action" model="ir.actions.act_window">
+        	<field name="name">Zones</field>
+        	<field name="res_model">sale.zone</field>
+        	<field name="view_type">form</field>
+        	<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="view_zones_tree"/>
+        	<field name="domain">[]</field>
+        	<field name="help" type="html">
+            	<p class="oe_view_nocontent_create">Create Zones
+            	</p>
+        	</field>
+        </record>
+
+<!--	Commercial Lines -->
+
+		<record id="commercial_line_tree_view" model="ir.ui.view">
+            <field name="name">commercial.line.tree</field>
+            <field name="model">commercial.line</field>
+            <field name="arch" type="xml">
+                <tree string="Commercial Lines">
+					<field name="name"/>
+					<field name="code"/>
+               </tree>
+            </field>
+        </record>
+
+		<record id="commercial_line_form" model="ir.ui.view">
+            <field name="name">commercial.line.form</field>
+            <field name="model">commercial.line</field>
+            <field name="arch" type="xml">
+                <form string="Commercial Lines">
+					<sheet>
+                      <div class="oe_button_box" name="button_box">
+						  <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                        </button>
+                        </div>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only" string="Name"/>
+                            <h1>
+                                <field name="name" placeholder="Name"/>
+                            </h1>
+                        </div>
+						<group>
+							<group>
+								<field name="code"/>
+								<field name="commercial_line"/>
+							</group>
+                    	</group>
+                    </sheet>
+               </form>
+            </field>
+        </record>
+
+		<record id="commercial_line_action" model="ir.actions.act_window">
+        	<field name="name">Commercial Line</field>
+        	<field name="res_model">commercial.line</field>
+        	<field name="view_type">form</field>
+        	<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="commercial_line_tree_view"/>
+        	<field name="domain">[]</field>
+        	<field name="help" type="html">
+            	<p class="oe_view_nocontent_create">Create Commercial Lines
+            	</p>
+        	</field>
+        </record>
+
+<!--	Delivery Lines	-->
+
+		<record id="delivery_line_tree_view" model="ir.ui.view">
+            <field name="name">delivery.line.tree</field>
+            <field name="model">delivery.line</field>
+            <field name="arch" type="xml">
+                <tree string="Delivery Lines">
+					<field name="name"/>
+					<field name="code"/>
+               </tree>
+            </field>
+        </record>
+
+		<record id="delivery_line_form" model="ir.ui.view">
+            <field name="name">delivery.line.form</field>
+            <field name="model">delivery.line</field>
+            <field name="arch" type="xml">
+                <form string="Delivery Lines">
+					<sheet>
+                      <div class="oe_button_box" name="button_box">
+						  <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                        </button>
+                        </div>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only" string="Name"/>
+                            <h1>
+                                <field name="name" placeholder="Name"/>
+                            </h1>
+                        </div>
+						<group>
+							<group>
+								<field name="code"/>
+								<field name="delivery_line"/>
+							</group>
+                    	</group>
+                    </sheet>
+               </form>
+            </field>
+        </record>
+
+
+		<record id="delivery_line_action" model="ir.actions.act_window">
+        	<field name="name">Delivery Line</field>
+        	<field name="res_model">delivery.line</field>
+        	<field name="view_type">form</field>
+        	<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="delivery_line_tree_view"/>
+        	<field name="domain">[]</field>
+        	<field name="help" type="html">
+            	<p class="oe_view_nocontent_create">Create Delivery Lines
+            	</p>
+        	</field>
+        </record>
+
+<!--Sales Agent-->
+
+		<record id="sales_agent_tree_view" model="ir.ui.view">
+            <field name="name">sales.agent.tree</field>
+            <field name="model">sales.agent</field>
+            <field name="arch" type="xml">
+                <tree string="Sales Agents">
+					<field name="code"/>
+					<field name="agent_name"/>
+					<field name="email"/>
+               </tree>
+            </field>
+        </record>
+
+		<record id="sales_agent_form" model="ir.ui.view">
+            <field name="name">sale.agent.form</field>
+            <field name="model">sales.agent</field>
+            <field name="arch" type="xml">
+                <form string="Sales Agent">
+					<sheet>
+                      <div class="oe_button_box" name="button_box">
+						  <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                        </button>
+                        </div>
+						<div class="oe_title">
+                        <h1>
+                            <field name="code" readonly="1"/>
+                        </h1>
+                    	</div>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only" string="Name"/>
+                            <h1>
+                                <field name="agent_name" placeholder="Name"/>
+                            </h1>
+                        </div>
+						<group>
+                        <group>
+                            <field name="email" widget="email"/>
+							<field name="mobile" widget="phone"/>
+							<field name="related_commercial_line"/>
+                        </group>
+                    </group>
+                    </sheet>
+               </form>
+            </field>
+        </record>
+
+        <record id="view_sales_agent_kanban" model="ir.ui.view">
+            <field name="name">sales.agent.kanban</field>
+            <field name="model">sales.agent</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile">
+                    <field name="id"/>
+                    <field name="agent_name"/>
+                    <field name="code"/>
+                    <field name="email"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_global_click">
+                                <div class="o_kanban_image">
+                                    <img alt="Avatar" t-att-src="kanban_image('res.users', 'image_medium', record.id.raw_value)"/>
+                                </div>
+                                <div class="oe_kanban_details">
+                                    <strong class="o_kanban_record_title">
+                                    <field name="code"/>
+                                    </strong>
+                                <div t-if="record.agent_name.value">
+                                        <t t-esc="record.agent_name.value"/>
+                                </div>
+                                    <div t-if="record.email.value">
+                                        <t t-esc="record.email.value"/>
+                                </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+		<record id="view_sales_agent" model="ir.actions.act_window">
+        	<field name="name">Sales Agent</field>
+        	<field name="res_model">sales.agent</field>
+        	<field name="view_type">form</field>
+        	<field name="view_mode">tree,kanban,form</field>
+			<field name="view_id" ref="sales_agent_tree_view"/>
+        	<field name="domain">[]</field>
+        	<field name="help" type="html">
+            	<p class="oe_view_nocontent_create">Create Sales Agents
+            	</p>
+        	</field>
+        </record>
+
+<!--		Delivery Agents -->
+
+        <record id="view_delivery_agent_kanban" model="ir.ui.view">
+            <field name="name">delivery.agent.kanban</field>
+            <field name="model">delivery.agent</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile">
+                    <field name="id"/>
+                    <field name="agent_name"/>
+                    <field name="code"/>
+                    <field name="email"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_global_click">
+                                <div class="o_kanban_image">
+                                    <img alt="Avatar" t-att-src="kanban_image('res.users', 'image_medium', record.id.raw_value)"/>
+                                </div>
+                                <div class="oe_kanban_details">
+                                    <strong class="o_kanban_record_title">
+                                    <field name="code"/>
+                                    </strong>
+                                <div t-if="record.agent_name.value">
+                                        <t t-esc="record.agent_name.value"/>
+                                </div>
+                                    <div t-if="record.email.value">
+                                        <t t-esc="record.email.value"/>
+                                </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+		<record id="delivery_agents_tree_view" model="ir.ui.view">
+            <field name="name">delivery.agent.tree</field>
+            <field name="model">delivery.agent</field>
+            <field name="arch" type="xml">
+                <tree string="Delivery Agents">
+					<field name="code"/>
+					<field name="agent_name"/>
+					<field name="email"/>
+               </tree>
+            </field>
+        </record>
+
+		<record id="delivery_agent_form" model="ir.ui.view">
+            <field name="name">delivery.agent.form</field>
+            <field name="model">delivery.agent</field>
+            <field name="arch" type="xml">
+                <form string="Delivery Agent">
+					<sheet>
+                      <div class="oe_button_box" name="button_box">
+						  <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                        </button>
+                        </div>
+						<div class="oe_title">
+                        <h1>
+                            <field name="code" readonly="1"/>
+                        </h1>
+                    </div>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only" string="Name"/>
+                            <h1>
+                                <field name="agent_name" placeholder="Name"/>
+                            </h1>
+                        </div>
+						<group>
+                        <group>
+                            <field name="email" widget="email"/>
+							<field name="mobile" widget="phone"/>
+							<field name="related_delivery_line"/>
+                        </group>
+                    </group>
+                    </sheet>
+               </form>
+            </field>
+        </record>
+
+
+		<record id="view_delivery_agent" model="ir.actions.act_window">
+        	<field name="name">Delivery Agent</field>
+        	<field name="res_model">delivery.agent</field>
+        	<field name="view_type">form</field>
+        	<field name="view_mode">tree,kanban,form</field>
+			<field name="view_id" ref="delivery_agents_tree_view"/>
+        	<field name="domain">[]</field>
+        	<field name="help" type="html">
+            	<p class="oe_view_nocontent_create">Create Delivery Agents
+            	</p>
+        	</field>
+        </record>
+
+	<data noupdate="1">
+		<record id="sale_agent" model="ir.sequence">
+            <field name="name">Sales Agent</field>
+            <field name="code">sales.agent</field>
+            <field name="prefix">SA</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+	</data>
+
+	<data noupdate="1">
+		<record id="delivery_agent" model="ir.sequence">
+            <field name="name">Delivery Agent</field>
+            <field name="code">delivery.agent</field>
+            <field name="prefix">DE</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+	</data>
+
+	<record id="res_partner_view_inherit" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='vat']" position="after">
+                <field name="zone"/>
+            </xpath>
+        </field>
+    </record>
+
+	<record id="res_partner_list_view" model="ir.ui.view">
+        <field name="name">res.partner.list.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='phone']" position="before">
+                <field name="zone"/>
+            </xpath>
+        </field>
+    </record>
+
+    	<menuitem id="pre_sales_menu"
+              	name="Pre-Sales" web_icon="pre_sales,static/description/icon.png"/>
+    	<menuitem id="menu_pre_sale" parent="pre_sales_menu" name="Sale" action="view_sales_agent" sequence="1"/>
+    	<menuitem id="menu_pre_sale_delivery" parent="pre_sales_menu" name="Delivery" action="pre_sale_menu_action" sequence="2"/>
+    	<menuitem id="menu_pre_sale_configuration" parent="pre_sales_menu" name="Configuration" sequence="3"/>
+    	<menuitem id="menu_zones" parent="menu_pre_sale_configuration" name="Zone" action="pre_sale_menu_action"/>
+    	<menuitem id="menu_commercial_lines" parent="menu_pre_sale_configuration" name="Commercial Lines" action="commercial_line_action"/>
+    	<menuitem id="menu_delivery_lines" parent="menu_pre_sale_configuration" name="Delivery Lines" action="delivery_line_action"/>
+    	<menuitem id="menu_customers" parent="menu_pre_sale_configuration" name="Customers" action="base.action_partner_form"/>
+    	<menuitem id="menu_sales_agent" parent="menu_pre_sale" name="Sales Agents" action="view_sales_agent"/>
+    	<menuitem id="menu_delivery_agents" parent="menu_pre_sale_delivery" name="Delivery Agents" action="view_delivery_agent"/>
+	</data>
+</odoo>

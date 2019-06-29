@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <template id="report_send_out_document">
+            <t t-call="web.external_layout">
+                <t t-set="doc" t-value="docs"/>
+                <div class="pull-right">
+                    <strong>Created By:</strong><span t-field="doc.create_uid"/>
+                </div>
+                <strong>Delivery Agent:</strong><span t-field="doc.name"/><br/>
+                    <span t-field="doc.name.mobile"/><br/>
+                         <strong>Order Date:</strong><span t-field="doc.create_date" t-options='{"format": "YYYY/MM/DD"}'/><br/>
+                        <strong>Status:</strong><span t-field="doc.state"/><br/>
+                    <div class="row mt32 mb32">
+                        <div class="page">
+                            <div class="oe_structure"/>
+                            <table class="table table-condensed" name="scan_image" style="border: 2px solid black;height:20px;width:20px;">
+                                <tbody class="scan_images">
+                                    <tr border="1">
+                                        <td border="1">
+                                        <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', doc.code, 600, 100)" style="width:300px;height:50px;" alt="Barcode"/><br/>
+                                        <div style="padding-left: 80px;">
+                                         <strong><span t-field="doc.code"/></strong>
+                                        </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                <table class="table table-condensed">
+                    <tbody class="scan_images">
+                        <tr>
+                            <th>Reference</th>
+                            <th>Customer</th>
+                            <th>Phone</th>
+                            <th>Zone</th>
+                        </tr>
+                        <t t-foreach="doc.picking_lines" t-as="x">
+                        <tr>
+                            <td><span t-field="x.reference"/></td>
+                            <td><span t-field="x.partner_id.name"/></td>
+                            <td><span t-field="x.partner_id.mobile"/></td>
+                            <td><span t-field="x.partner_id.zone"/></td>
+                        </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </t>
+</template>
+
+        <template id="report_send_out_picking">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="pre_sales_stock_extend.report_send_out_document"/>
+                </t>
+            </t>
+        </template>
+</odoo>

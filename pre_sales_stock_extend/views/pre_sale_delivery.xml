@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+        <record id="stock_picking_view_inherit" model="ir.ui.view">
+            <field name="name">stock.picking.inherit</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='scheduled_date']" position="after">
+                    <field name="delivery_line"/>
+                </xpath>
+            </field>
+        </record>
+
+<!--        Pickings Send Out Form-->
+		<record id="picking_send_out_tree_view" model="ir.ui.view">
+            <field name="name">picking.send.order.tree</field>
+            <field name="model">picking.order</field>
+            <field name="arch" type="xml">
+                <tree string="Orders">
+					<field name="code"/>
+					<field name="name"/>
+					<field name="state"/>
+               </tree>
+            </field>
+        </record>
+
+		<record id="picking_form_view" model="ir.ui.view">
+            <field name="name">picking.order.form</field>
+            <field name="model">picking.order</field>
+            <field name="arch" type="xml">
+                <form string="Orders">
+                    <header>
+                    <button name="action_confirm" id="action_confirm" string="Confirm" class="btn-primary" type="object"/>
+                    <button name="action_send_order" id="action_send_order" string="Send Out" class="btn-primary" type="object" attrs="{'invisible': [('state','=','draft')]}"/>
+                    <button name="button_cancel" id="button_cancel" type="object" string="Cancel"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirm,delivered,cancel"/>
+                </header>
+                    <sheet>
+                      <div class="oe_button_box" name="button_box">
+						  <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                          <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                        </button>
+                        </div>
+                        <group>
+                            <group>
+                            <field name="code" readonly="1"/>
+                            <field name="delivery_line"/>
+                            <field name="name"/>
+                            </group>
+                            <group>
+                                <field name="barcode"/>
+                                <field name="create_date"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Picking Lines" name="picking_lines">
+                            <field name="picking_lines" >
+                                <tree string="Picking" editable="bottom">
+                                    <field name="reference"/>
+                                    <field name="partner_id"/>
+                                    <field name="phone"/>
+                                    <field name="zone"/>
+                            </tree>
+                            </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+
+               </form>
+            </field>
+        </record>
+
+		<record id="view_picking_send_out_form" model="ir.actions.act_window">
+        	<field name="name">Picking Send-Out Form</field>
+        	<field name="res_model">picking.order</field>
+        	<field name="view_type">form</field>
+        	<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="picking_send_out_tree_view"/>
+        	<field name="domain">[]</field>
+        	<field name="help" type="html">
+            	<p class="oe_view_nocontent_create">Create Orders
+            	</p>
+        	</field>
+        </record>
+
+        <data noupdate="1">
+            <record id="picking_order" model="ir.sequence">
+                <field name="name">Picking Order</field>
+                <field name="code">picking.order</field>
+                <field name="prefix">PS%(range_year)s</field>
+                <field name="padding">5</field>
+                <field name="company_id" eval="False"/>
+            </record>
+	    </data>
+
+        <menuitem id="menu_stock_operations" name="Pickings Send-Out Orders" parent="stock.menu_stock_warehouse_mgmt" action="view_picking_send_out_form" sequence="6"/>
+	</data>
+</odoo>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <report
+            id="action_send_out_report"
+            string="Picking Send Out Order"
+            model="picking.order"
+            report_type="qweb-pdf"
+            file="pre_sales_stock_extend.report_send_out_picking"
+            name="pre_sales_stock_extend.report_send_out_picking"
+        />
+</odoo>

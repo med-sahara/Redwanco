@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+        <record id="crm_team_view_inherit" model="ir.ui.view">
+            <field name="name">crm.team.form.inherit</field>
+            <field name="model">crm.team</field>
+            <field name="inherit_id" ref="sales_team.crm_team_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='dashboard']" position="after">
+                    <page string='Sales Agents'>
+                         <field name="agent_ids" widget="many2many" options="{'not_delete': True}">
+                            <kanban quick_create="false" create="true" delete="true">
+                                <field name="id"/>
+                                <field name="agent_name"/>
+                                <templates>
+                                    <t t-name="kanban-box">
+                                        <div class="oe_kanban_global_click" style="max-width: 200px">
+                                            <div class="o_kanban_record_top">
+                                                <img t-att-src="kanban_image('sales.agent', 'image_small', record.id.raw_value)" height="40" width="40" class="oe_avatar oe_kanban_avatar_smallbox mb0" alt="Avatar"/>
+                                                <div class="o_kanban_record_headings ml8">
+                                                    <strong class="o_kanban_record_title"><field name="agent_name"/></strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </templates>
+                            </kanban>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="sale_order_form_view" model="ir.ui.view">
+            <field name="name">sale.order.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="agent_id"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sale_group_by_inherit">
+            <field name="name">sales.agent.group.by.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group/filter[@name='order_month']" position="after">
+                    <filter string="Sales Agent" name="sales_agent" domain="[]" context="{'group_by':'agent_id'}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="account_invoice_form_view" model="ir.ui.view">
+            <field name="name">account.invoice.form.inherit</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="agent_id"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="account_invoice_search_view" model="ir.ui.view">
+            <field name="name">account.invoice.filter.inherit</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group/filter[@name='salesperson']" position="after">
+                    <filter string="Sales Agent" name="agent_id" domain="[]" context="{'group_by':'agent_id'}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="sale_report_search_view" model="ir.ui.view">
+            <field name="name">sale.report.filter.inherit</field>
+            <field name="model">sale.report</field>
+            <field name="inherit_id" ref="sale.view_order_product_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group/filter[@name='status']" position="after">
+                    <filter string="Sales Agent" name="agent_id" domain="[]" context="{'group_by':'agent_id'}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="account_payment_form_inherit" model="ir.ui.view">
+            <field name="name">account.payment.inherit</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="agent_id"/>
+                </xpath>
+            </field>
+        </record>
+
+
+	</data>
+</odoo>
