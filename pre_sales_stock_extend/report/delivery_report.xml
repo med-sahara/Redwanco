@@ -2,22 +2,16 @@
 <odoo>
     <template id="picking_operations_inherit" inherit_id="stock.report_picking">
         <xpath expr="//div[hasclass('page')]/div[hasclass('row')]/div[hasclass('col-6')]" position="inside">
-            <div t-if="o.agent_id">
-                <strong>Delivery Agent:</strong><span t-field="o.agent_id"/>
-            </div>
-            <div t-if="o.agent_id">
-                <strong>Mobile:</strong><span t-field="o.agent_id.mobile"/>
+            <div t-if="o.delivery_line">
+                <strong>Delivery Line:</strong><span t-field="o.delivery_line"/>
             </div>
         </xpath>
     </template>
 
     <template id="delivery_slip_inherit" inherit_id="stock.report_delivery_document">
         <xpath expr="//t[@t-set='address']" position="after">
-            <div t-if="o.agent_id">
-                <strong>Delivery Agent:</strong><span t-field="o.agent_id"/>
-            </div>
-            <div t-if="o.agent_id">
-                <strong>Mobile:</strong><span t-field="o.agent_id.mobile"/>
+            <div t-if="o.delivery_line">
+                <strong>Delivery Line:</strong><span t-field="o.delivery_line"/>
             </div>
         </xpath>
     </template>

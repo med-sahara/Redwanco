@@ -15,8 +15,7 @@ class PickingOrders(models.Model):
         ('cancel', 'Cancelled')
     ], string='Status', readonly=True, copy=False, index=True, default='draft')
     barcode = fields.Char('Barcode', copy=False)
-    reference_domain = fields.Char('Domain')
-    delivery_line = fields.Many2one('delivery.line',string='Delivery Lines')
+    delivery_line = fields.Many2one('delivery.line', string='Delivery Lines')
 
     @api.model
     def create(self, vals):
@@ -47,19 +46,21 @@ class PickingOrders(models.Model):
 
     @api.multi
     def action_confirm(self):
-        self.write({
-            'state': 'confirm'
-        })
+        return self.write({'state': 'confirm'})
+
+    @api.onchange('delivery_line')
+    def onchange_delivery_line(self):
+        agents = self.env['delivery.agent'].search([('related_delivery_line', '=', self.delivery_line.id)])
+        domain = {'name': [('id', 'in', agents.ids)]}
+        return {'domain': domain}
 
 
 class SendOutOrders(models.Model):
     _name = 'order.picking'
     _description = "Picking orders in send out form"
 
-    reference = fields.Many2one('stock.picking',
-                                 String='Reference')
-    picking_id = fields.Many2one('picking.order',
-                                    String='Picking')
+    reference = fields.Many2one('stock.picking', String='Reference')
+    picking_id = fields.Many2one('picking.order', String='Picking')
     partner_id = fields.Many2one('res.partner', string='Customer')
     phone = fields.Char('Phone')
     zone = fields.Many2one('sale.zone', string='Zone')
@@ -71,12 +72,25 @@ class SendOutOrders(models.Model):
             'phone': self.reference.partner_id.mobile,
             'zone': self.reference.partner_id.zone.id
         })
+        pickings = self.env['stock.picking'].search(
+            [('delivery_line', '=', self.picking_id.delivery_line.id)])
+        domain = {'reference': [('id', 'in', pickings.ids)]}
+        return {'domain': domain}
 
 
+class PickingOrder(models.Model):
+    _inherit = 'stock.picking'
+    _description = "Delivery line in stock picking"
 
-
-
-
-
-
+    @api.model
+    def create(self, vals_list):
+        res = super(PickingOrder, self).create(vals_list)
+        lines_to_deliver = self.env['delivery.line'].search([])
+        for line in lines_to_deliver:
+            for vals in line.delivery_line:
+                if vals.id == res.partner_id.zone.id:
+                    res.update({
+                        'delivery_line': line.id
+                    })
+        return res
 

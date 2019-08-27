@@ -45,8 +45,8 @@
                         <t t-set="total" t-value="total + move.product_uom_qty"/>
                         <t t-set="items" t-value="items +1"/>
                     </t>
-                    <strong>Delivery Agent:</strong>
-                    <t t-esc="o.agent_id.agent_name"/>
+                    <strong>Delivery Line:</strong>
+                    <t t-esc="o.delivery_line.name"/>
                     <br/>
                     <strong>Quantity:</strong><t t-esc="total"/>
                     <strong>Items:</strong><t t-esc="items"/>

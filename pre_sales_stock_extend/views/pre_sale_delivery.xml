@@ -31,8 +31,8 @@
             <field name="arch" type="xml">
                 <form string="Orders">
                     <header>
-                    <button name="action_confirm" id="action_confirm" string="Confirm" class="btn-primary" type="object"/>
-                    <button name="action_send_order" id="action_send_order" string="Send Out" class="btn-primary" type="object" attrs="{'invisible': [('state','=','draft')]}"/>
+                    <button name="action_confirm" id="action_confirm" string="Confirm" class="btn-primary" type="object" attrs="{'invisible': ['|',('state','=','delivered'),('state','=','confirm')]}"/>
+                    <button name="action_send_order" id="action_send_order" string="Send Out" class="btn-primary" type="object" attrs="{'invisible': ['|',('state','=','draft'),('state','=','delivered')]}"/>
                     <button name="button_cancel" id="button_cancel" type="object" string="Cancel"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,confirm,delivered,cancel"/>
                 </header>

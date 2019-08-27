@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!--    <template id="report_financial_operating_units"-->
+<!--              inherit_id="account.report_financial">-->
+<!--        <xpath expr="//div[hasclass('row', 'mt32', 'mb32')]" position="inside">-->
+<!--            <div class="col-xs-4" t-if="data['operating_units']">-->
+<!--                <strong>Operating Units:</strong>-->
+<!--                  <p t-esc="data['operating_units']"/>-->
+<!--            </div>-->
+<!--        </xpath>-->
+<!--    </template>-->
+
+    <template id="search_template_operational_units">
+        <div class="btn-group o_dropdown o_account_reports_filter_operational_unit">
+        <a type="button" class="dropdown-toggle" data-toggle="dropdown">
+            <span class="fa fa-filter"/>
+            Operational Units:
+<!--            <t t-set="selected_operational_units" t-value="', '.join(unit.get('name') for unit in options['operational_unit'] if unit.get('selected'))"/>-->
+<!--            <t t-if="selected_operational_units">-->
+<!--                <t t-esc="selected_operational_units"/>-->
+<!--            </t>-->
+<!--            <t t-else="">-->
+<!--                All-->
+<!--            </t>-->
+        </a>
+        </div>
+<!--        <div class="dropdown-menu o_filters_menu" role="menu">-->
+<!--            <t t-foreach="options['operational_unit']" t-as="c">-->
+<!--                <a role="menuitem" class="dropdown-item js_account_report_choice_filter" t-att-title="c.get('name')" data-filter="operational_unit" t-att-data-id="c.get('id')"><t t-esc="c.get('name')"/></a>-->
+<!--            </t>-->
+<!--        </div>-->
+        <div class="dropdown-menu o_filters_menu" role="menu">
+            <t t-foreach="options['operational_unit']" t-as="operational_unit">
+                <a role="menuitem" class="dropdown-item js_account_report_operational_unit_filter" t-att-title="operational_unit.get('name')" data-filter="operational_unit" t-att-data-id="ttt"><t t-esc="op1"/></a>
+            </t>
+        </div>
+    </template>
+
+        <template id="report_financial_operating_units"
+              inherit_id="account_reports.search_template">
+        <xpath expr="//div[hasclass('o_account_reports_filter_multi_company')]" position="after">
+               <t t-call="account_operating_unit.search_template_operational_units"/>
+        </xpath>
+    </template>
+
+
+</odoo>

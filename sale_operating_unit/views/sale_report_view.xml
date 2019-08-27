@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+     Copyright 2019 Eficent Business and IT Consulting Services S.L. Serpent Consulting Services Pvt. Ltd.
+     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl-3.0)
+<!--    <record id="view_sale_report_search" model="ir.ui.view">-->
+<!--        <field name="name">sale.report.search</field>-->
+<!--        <field name="model">sale.report</field>-->
+<!--        <field name="inherit_id"-->
+<!--               ref="sale.view_order_product_search">-->
+<!--            <xpath expr="//group/filter[@name='company']" position="before">-->
+<!--                <filter name='group_by_operating_unit'-->
+<!--                        string="Operating Unit"-->
+<!--                        context="{'group_by':'operating_unit_id'}"-->
+<!--                        groups="operating_unit.group_multi_operating_unit"/>-->
+<!--            </xpath>-->
+<!--        </field>-->
+<!--    </record>-->
+<!--    <record id="sale_report_operation_unit" model="ir.ui.view">-->
+<!--            <field name="name">sale.report.operation.unit.filter</field>-->
+<!--            <field name="model">sale.report</field>-->
+<!--            <field name="inherit_id" ref="sale.view_order_product_search"/>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <xpath expr="//group/filter[@name='company']" position="before">-->
+<!--                    <filter string="Operation Unit" name="operating_unit_id" domain="[]" context="{'group_by':'operating_unit_id'}"/>-->
+<!--                </xpath>-->
+<!--            </field>-->
+<!--        </record>-->
+</odoo>

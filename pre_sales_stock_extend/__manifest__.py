@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
         'name': 'Inventory Extended for Presale',
-        'version': '12.0.1.0.0',
+        'version': '12.0.1.0.10',
         'summary': 'Inventory Extended for Presales Management',
         'category': 'Sale',
         'author': 'Vinaya S B',
@@ -16,6 +16,7 @@
                  'report/packing_label.xml',
                  'report/send_out_order.xml',
                  'report/send_out_order_view.xml',
+                 'views/send_out_form_extend.xml',
                  'security/ir.model.access.csv'
         ],
         'images': [],

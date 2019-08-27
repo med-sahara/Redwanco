@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
         'name': 'Sales Extended for Pre-sale',
-        'version': '12.0.1.0.0',
+        'version': '12.0.1.0.10',
         'summary': 'Sales Extended for Pre-Sales Management',
         'category': 'Sale',
         'author': 'Vinaya S B',

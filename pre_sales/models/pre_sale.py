@@ -44,6 +44,21 @@ class SalesAgent(models.Model):
     active = fields.Boolean(default=True,
                             help="If unchecked, it will allow you to hide the Sales Agent")
     related_commercial_line = fields.Many2one('commercial.line', string='Commercial Line')
+    total_sales = fields.Integer(compute='_compute_total_sales_count')
+
+    def _compute_total_sales_count(self):
+
+        """Sale Count in sales agent form"""
+
+        all_partners = self.search([('id', 'in', self.ids)])
+        sale_order_groups = self.env['sale.order'].read_group(
+            domain=[('agent_id', 'in', all_partners.ids)],
+            fields=['agent_id'], groupby=['agent_id']
+        )
+        for group in sale_order_groups:
+            partner = self.browse(group['agent_id'][0])
+            if partner in self:
+                partner.total_sales += group['agent_id_count']
 
     @api.model
     def create(self, vals):
@@ -76,8 +91,23 @@ class DeliveryAgent(models.Model):
     email = fields.Char('Email', required=True)
     mobile = fields.Char('Mobile', required=True)
     active = fields.Boolean(default=True,
-                            help="If unchecked, it will allow you to hide the Sales Agent")
+                            help="If unchecked, it will allow you to hide the Delivery Agent")
     related_delivery_line = fields.Many2one('delivery.line', string='Delivery Line')
+    orders_count = fields.Integer(compute='_compute_send_orders')
+
+    def _compute_send_orders(self):
+
+        """Picking Orders Count in delivery agent"""
+
+        all_partners = self.search([('id', 'in', self.ids)])
+        send_order_groups = self.env['picking.order'].read_group(
+            domain=[('name', 'in', all_partners.ids)],
+            fields=['name'], groupby=['name']
+        )
+        for group in send_order_groups:
+            partner = self.browse(group['name'][0])
+            if partner in self:
+                partner.orders_count += group['name_count']
 
     @api.model
     def create(self, vals):

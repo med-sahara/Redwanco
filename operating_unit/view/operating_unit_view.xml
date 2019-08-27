@@ -4,14 +4,18 @@
         <field name="name">operating.unit.form</field>
         <field name="model">operating.unit</field>
         <field name="arch" type="xml">
-            <form string="Operating Unit" >
+            <form string="Operating Unit">
+                <sheet>
                 <group name="main_group">
+                  <group>
                     <field name="name"/>
                     <field name="code"/>
                     <field name="active"/>
                     <field name="partner_id"/>
                     <field name="company_id" groups="base.group_multi_company"/>
-                </group>
+                    </group>
+                    </group>
+                </sheet>
             </form>
         </field>
     </record>

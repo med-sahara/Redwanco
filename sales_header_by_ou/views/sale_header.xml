@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+        <record id="operating_unit_logo" model="ir.ui.view">
+            <field name="name">operating.unit.logo.form.view</field>
+            <field name="model">operating.unit</field>
+            <field name="inherit_id" ref="operating_unit.view_operating_unit_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='main_group']" position="before">
+                    <field name="logo" widget="image" class="oe_avatar"/>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="before">
+                    <label for="street" string="Address"/>
+                    <div class="o_address_format">
+                        <field name="street" placeholder="Street..." class="o_address_street"/>
+                        <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                        <field name="city" placeholder="City" class="o_address_city"/>
+                        <field name="state_id" class="o_address_state" placeholder="State" options="{&quot;no_open&quot;: True}"  context="{'country_id': country_id, 'zip': zip}"/>
+                        <field name="zip" placeholder="ZIP" class="o_address_zip" />
+                        <field name="country_id" placeholder="Country" class="o_address_country" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"/>
+                    </div>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="ou_footer"/>
+                </xpath>
+            </field>
+        </record>
+
+<!--        Report Templates based on operating units-->
+
+        <template id="web.external_layout_standard">
+         <div class="header">
+            <div class="row">
+                <div class="col-6 mb4" style="align-items: center;justify-content: space-between;padding-bottom: 5px;">
+                    <t t-if="'operating_unit_id' in o.fields_get()">
+                    <img t-if="o.operating_unit_id.logo" t-att-src="image_data_uri(o.operating_unit_id.logo)" style="max-height: 70px;" alt="Logo"/>
+                    </t>
+                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 55px;padding-left: 100px;float:right;margin-top: 20px;" alt="Logo"/>
+                </div>
+                <div class="col-9 text-right" style="margin-top:22px;" t-field="company.report_header" name="moto"/>
+            </div>
+              <div t-if="company.logo or company.report_header" class="row zero_min_height">
+                <div class="col-12">
+                    <div style="border-bottom: 1px solid black;"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <t t-if="'operating_unit_id' in o.fields_get()"><t t-esc="o.operating_unit_id.name"/><br/></t>
+                    <t t-if="'operating_unit_id' in o.fields_get()"><t t-esc="o.operating_unit_id.street"/>,</t>
+                    <t t-if="'operating_unit_id' in o.fields_get()"><t t-esc="o.operating_unit_id.street2"/></t>
+                    <t t-if="'operating_unit_id' in o.fields_get()"><t t-esc="o.operating_unit_id.city"/><br/></t>
+                    <t t-if="'operating_unit_id' in o.fields_get()"><t t-esc="o.operating_unit_id.state_id.name"/></t>
+                    <t t-if="'operating_unit_id' in o.fields_get()"><t t-esc="o.operating_unit_id.zip"/><br/></t>
+                    <t t-if="'operating_unit_id' in o.fields_get()"><t t-esc="o.operating_unit_id.country_id.name"/></t>
+                </div>
+            </div>
+        </div>
+
+        <div class="article o_report_layout_standard"  t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-call="web.address_layout"/>
+            <t t-raw="0"/>
+        </div>
+
+        <div class="footer o_standard_footer">
+            <div class="text-center" style="border-top: 1px solid black;">
+                <ul class="list-inline mb4">
+                    <t t-if="'operating_unit_id' in o.fields_get()"><t t-esc="o.operating_unit_id.ou_footer"/></t>
+                </ul>
+
+                <div name="financial_infos">
+                    <span t-field="company.report_footer"/>
+                </div>
+
+                <div t-if="report_type == 'pdf'" class="text-muted">
+                    Page: <span class="page"/> / <span class="topage"/>
+                </div>
+            </div>
+        </div>
+        </template>
+
+        <template id="web.external_layout_background">
+        <div class="header">
+            <div class="o_background_header">
+            <div class="float-right">
+                <h3 class="mt0 text-right" t-field="company.report_header"/>
+            </div>
+                <t t-if="'operating_unit_id' in o.fields_get()">
+                <img t-if="o.operating_unit_id.logo" t-att-src="image_data_uri(o.operating_unit_id.logo)" style="max-height: 100px;" alt="Logo"/>
+                </t>
+                <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 55px;padding-left: 100px;float:right;margin-top: 20px;" alt="Logo"/>
+            <div class="float-left company_address">
+               <t t-if="'operating_unit_id' in o.fields_get()"><t t-esc="o.operating_unit_id.name"/><br/></t>
+                    <t t-if="'operating_unit_id' in o.fields_get()"><t t-esc="o.operating_unit_id.street"/>,</t>
+                    <t t-if="'operating_unit_id' in o.fields_get()"><t t-esc="o.operating_unit_id.street2"/></t>
+                    <t t-if="'operating_unit_id' in o.fields_get()"><t t-esc="o.operating_unit_id.city"/><br/></t>
+                    <t t-if="'operating_unit_id' in o.fields_get()"><t t-esc="o.operating_unit_id.state_id.name"/></t>
+                    <t t-if="'operating_unit_id' in o.fields_get()"><t t-esc="o.operating_unit_id.zip"/><br/></t>
+                    <t t-if="'operating_unit_id' in o.fields_get()"><t t-esc="o.operating_unit_id.country_id.name"/></t>
+            </div>
+            <div class="clearfix mb8"/>
+            </div>
+        </div>
+
+        <div class="article o_report_layout_background" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-call="web.address_layout"/>
+            <t t-raw="0"/>
+        </div>
+
+        <div class="footer o_background_footer">
+            <div class="text-center">
+                <ul class="list-inline">
+                    <t t-if="'operating_unit_id' in o.fields_get()"><t t-esc="o.operating_unit_id.ou_footer"/></t>
+                </ul>
+                <div t-field="company.report_footer"/>
+                <div t-if="report_type == 'pdf'" class="text-muted">
+                    Page:
+                    <span class="page"/>
+                    of
+                    <span class="topage"/>
+                </div>
+            </div>
+        </div>
+    </template>
+
+        <template id="web.external_layout_boxed">
+        <div class="header">
+            <div class="o_boxed_header">
+            <div class="row mb8">
+                <div class="col-6">
+                    <t t-if="'operating_unit_id' in o.fields_get()">
+                    <img t-if="o.operating_unit_id.logo" t-att-src="image_data_uri(o.operating_unit_id.logo)" style="max-height: 100px;" alt="Logo"/>
+                    </t>
+                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 55px;padding-left: 100px;float:right;margin-top: 20px;" alt="Logo"/>
+                </div>
+                <div class="col-6 text-right mb4">
+                    <h4 class="mt0" t-field="company.report_header"/>
+                    <div name="company_address" class="mb4">
+                        <t t-if="'operating_unit_id' in o.fields_get()"><t t-esc="o.operating_unit_id.name"/><br/></t>
+                        <t t-if="'operating_unit_id' in o.fields_get()"><t t-esc="o.operating_unit_id.street"/>,</t>
+                        <t t-if="'operating_unit_id' in o.fields_get()"><t t-esc="o.operating_unit_id.street2"/></t>
+                        <t t-if="'operating_unit_id' in o.fields_get()"><t t-esc="o.operating_unit_id.city"/><br/></t>
+                        <t t-if="'operating_unit_id' in o.fields_get()"><t t-esc="o.operating_unit_id.state_id.name"/></t>
+                        <t t-if="'operating_unit_id' in o.fields_get()"><t t-esc="o.operating_unit_id.zip"/><br/></t>
+                        <t t-if="'operating_unit_id' in o.fields_get()"><t t-esc="o.operating_unit_id.country_id.name"/></t>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <div class="article o_report_layout_boxed" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-call="web.address_layout"/>
+            <t t-raw="0"/>
+        </div>
+
+        <div class="footer o_boxed_footer">
+            <div class="text-center">
+                <ul class="list-inline">
+                    <t t-if="'operating_unit_id' in o.fields_get()"><t t-esc="o.operating_unit_id.ou_footer"/></t>
+                </ul>
+                <div t-field="company.report_footer"/>
+                <div t-if="report_type == 'pdf'">
+                    Page: <span class="page"/> / <span class="topage"/>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="web.external_layout_clean">
+        <div class="header">
+            <div class="o_clean_header">
+            <div class="row">
+                <div class="col-6">
+                    <t t-if="'operating_unit_id' in o.fields_get()">
+                    <img t-if="o.operating_unit_id.logo" t-att-src="image_data_uri(o.operating_unit_id.logo)" style="max-height: 100px;" alt="Logo"/>
+                    </t>
+                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 55px;padding-left: 100px;float:right;margin-top: 45px;" alt="Logo"/>
+                </div>
+                <div class="col-5 offset-1" name="company_address">
+                    <ul class="list-unstyled">
+                        <t t-if="'operating_unit_id' in o.fields_get()"><strong><t t-esc="o.operating_unit_id.name"/><br/></strong></t>
+                        <t t-if="'operating_unit_id' in o.fields_get()"><t t-esc="o.operating_unit_id.street"/>,</t>
+                        <t t-if="'operating_unit_id' in o.fields_get()"><t t-esc="o.operating_unit_id.street2"/></t>
+                        <t t-if="'operating_unit_id' in o.fields_get()"><t t-esc="o.operating_unit_id.city"/><br/></t>
+                        <t t-if="'operating_unit_id' in o.fields_get()"><t t-esc="o.operating_unit_id.state_id.name"/></t>
+                        <t t-if="'operating_unit_id' in o.fields_get()"><t t-esc="o.operating_unit_id.zip"/><br/></t>
+                        <t t-if="'operating_unit_id' in o.fields_get()"><t t-esc="o.operating_unit_id.country_id.name"/></t>
+                    </ul>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <div class="article o_report_layout_clean"  t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-call="web.address_layout"/>
+            <t t-raw="0"/>
+        </div>
+
+        <div class="footer o_clean_footer">
+            <div class="row mt8">
+                <div class="col-3">
+                    <span t-field="company.report_footer"/>
+                </div>
+                <div class="col-4 text-right">
+                    <t t-if="'operating_unit_id' in o.fields_get()"><t t-esc="o.operating_unit_id.ou_footer"/></t>
+                </div>
+                <div class="col-4">
+                    <h4 class="mt0 mb0 text-uppercase" t-field="company.report_header"/>
+                </div>
+                <div class="col-1">
+                    <ul t-if="report_type == 'pdf'" class="list-inline pagenumber float-right text-center">
+                        <li class="list-inline-item"><strong><span class="page"/></strong></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </template>
+
+
+	</data>
+</odoo>

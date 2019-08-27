@@ -2,14 +2,13 @@
 <odoo>
         <template id="report_send_out_document">
             <t t-call="web.external_layout">
-                <t t-set="doc" t-value="docs"/>
                 <div class="pull-right">
-                    <strong>Created By:</strong><span t-field="doc.create_uid"/>
+                    <strong>Created By:</strong><span t-field="o.create_uid"/>
                 </div>
-                <strong>Delivery Agent:</strong><span t-field="doc.name"/><br/>
-                    <span t-field="doc.name.mobile"/><br/>
-                         <strong>Order Date:</strong><span t-field="doc.create_date" t-options='{"format": "YYYY/MM/DD"}'/><br/>
-                        <strong>Status:</strong><span t-field="doc.state"/><br/>
+                <strong>Delivery Agent:</strong><span t-field="o.name"/><br/>
+                    <span t-field="o.name.mobile"/><br/>
+                         <strong>Order Date:</strong><span t-esc="o.create_date.strftime('%Y-%m-%d')"/><br/>
+                        <strong>Status:</strong><span t-field="o.state"/><br/>
                     <div class="row mt32 mb32">
                         <div class="page">
                             <div class="oe_structure"/>
@@ -17,9 +16,9 @@
                                 <tbody class="scan_images">
                                     <tr border="1">
                                         <td border="1">
-                                        <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', doc.code, 600, 100)" style="width:300px;height:50px;" alt="Barcode"/><br/>
+                                        <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', o.code, 600, 100)" style="width:300px;height:50px;" alt="Barcode"/><br/>
                                         <div style="padding-left: 80px;">
-                                         <strong><span t-field="doc.code"/></strong>
+                                         <strong><span t-field="o.code"/></strong>
                                         </div>
                                         </td>
                                     </tr>
@@ -35,7 +34,7 @@
                             <th>Phone</th>
                             <th>Zone</th>
                         </tr>
-                        <t t-foreach="doc.picking_lines" t-as="x">
+                        <t t-foreach="o.picking_lines" t-as="x">
                         <tr>
                             <td><span t-field="x.reference"/></td>
                             <td><span t-field="x.partner_id.name"/></td>
@@ -50,7 +49,7 @@
 
         <template id="report_send_out_picking">
             <t t-call="web.html_container">
-                <t t-foreach="docs" t-as="doc">
+                <t t-foreach="docs" t-as="o">
                     <t t-call="pre_sales_stock_extend.report_send_out_document"/>
                 </t>
             </t>

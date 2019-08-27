@@ -16,13 +16,36 @@ class SaleOrderAgent(models.Model):
 
     @api.multi
     @api.onchange('partner_id')
-    def onchange_partner_id(self):
+    def onchange_partner_ids(self):
         """Show sales agent based on customer zone"""
+        if self.partner_id:
+            commercial_line = self.env['commercial.line'].search([('commercial_line', 'in', self.partner_id.zone.id)])
+            sales_agent = self.env['sales.agent'].search([('related_commercial_line', 'in', commercial_line.ids)])
+            domain = {'agent_id': [('id', 'in', sales_agent.ids)]}
+            return {'domain': domain}
 
-        commercial_line = self.env['commercial.line'].search([('commercial_line', 'in', self.partner_id.zone.id)])
-        sales_agent = self.env['sales.agent'].search([('related_commercial_line', 'in', commercial_line.ids)])
-        domain = {'agent_id': [('id', 'in', sales_agent.ids)]}
-        return {'domain': domain}
+    @api.onchange('agent_id')
+    def onchange_agent_id(self):
+        """Show customer  based on sales agent zone"""
+        if self.agent_id:
+            partners_list = []
+            partners = self.env['res.partner'].search([])
+            for val in partners:
+                for zones in self.agent_id.related_commercial_line.commercial_line:
+                    if zones.id == val.zone.id:
+                        partners_list.append(val.id)
+            domain = {'partner_id': [('id', 'in', partners_list)]}
+            return {'domain': domain}
+
+    @api.onchange('agent_id')
+    def onchange_sales_team(self):
+        sales_team = self.env['crm.team'].search([])
+        for team in sales_team:
+            for vals in team.agent_ids:
+                if self.agent_id.id == vals.id:
+                    self.update({
+                        'team_id': team.id
+                    })
 
 
 class AccountinvoiceInherit(models.Model):

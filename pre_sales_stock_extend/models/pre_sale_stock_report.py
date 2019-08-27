@@ -1,8 +1,7 @@
 from odoo import models, fields, api, _
 
 import qrcode
-# except ImportError:
-#     qrcode = None
+
 try:
     import base64
 except ImportError:
@@ -46,5 +45,8 @@ class StockPickingForm(models.Model):
         img.save(temp, format="PNG")
         qr_image = base64.b64encode(temp.getvalue())
         return qr_image
+
+
+
 
 

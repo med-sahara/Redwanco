@@ -4,6 +4,7 @@
 #   (<http://www.serpentcs.com>)
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).
 from odoo.tests import common
+from odoo import exceptions
 
 
 class TestSaleTeamOperatingUnit(common.TransactionCase):
@@ -15,8 +16,7 @@ class TestSaleTeamOperatingUnit(common.TransactionCase):
         self.crm_team_model = self.env['crm.team']
         # Groups
         self.grp_sale_mngr = self.env.ref('sales_team.group_sale_manager')
-        self.grp_user = self.env.ref(
-            'operating_unit.group_multi_operating_unit')
+        self.grp_user = self.env.ref('base.group_user')
         # Company
         self.company = self.env.ref('base.main_company')
         # Main Operating Unit
@@ -24,7 +24,6 @@ class TestSaleTeamOperatingUnit(common.TransactionCase):
         # B2C Operating Unit
         self.b2c = self.env.ref('operating_unit.b2c_operating_unit')
         # Create User 1 with Main OU
-
         self.user1 = self._create_user('user_1', [self.grp_sale_mngr,
                                                   self.grp_user], self.company,
                                        [self.ou1])
@@ -54,10 +53,9 @@ class TestSaleTeamOperatingUnit(common.TransactionCase):
 
     def _create_crm_team(self, uid, operating_unit):
         """Create a Sales Team."""
-        crm = self.crm_team_model.sudo(uid).create(
-            {'name': 'CRM team',
-             'operating_unit_id': operating_unit.id,
-             'company_id': self.company.id})
+        crm = self.crm_team_model.sudo(uid).create({'name': 'CRM team',
+                                                    'operating_unit_id':
+                                                    operating_unit.id})
         return crm
 
     def test_crm_team(self):
@@ -68,3 +66,13 @@ class TestSaleTeamOperatingUnit(common.TransactionCase):
                     ('operating_unit_id', '=', self.ou1.id)])
         self.assertEqual(team.ids, [], 'User 2 should not have access to '
                          '%s' % self.ou1.name)
+
+    def test_member_operating_unit(self):
+        # User 2 is assigned to B2C Operating Unit and cannot be a member of
+        # a team with the Operating Unit OU1
+        with self.assertRaises(exceptions.ValidationError):
+            self.crm_team_model.sudo().create({
+                'name': 'Test Team',
+                'operating_unit_id': self.ou1.id,
+                'member_ids': [(4, self.user2.id)]
+            })
