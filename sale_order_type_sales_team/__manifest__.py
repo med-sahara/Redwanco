@@ -5,7 +5,7 @@
         'summary': 'Sales Team in sale order type',
         'category': 'Sale',
         'author': '',
-        'depends': ['base', 'sale', 'sale_order_type'],
+        'depends': ['base', 'sale', 'sale_order_type','sales_team'],
         'data': [
                 'views/sale_order_st.xml'
         ],
