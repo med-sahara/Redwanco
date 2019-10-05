@@ -32,7 +32,7 @@ class PickingOrders(models.Model):
             self.picking_lines = self.env['order.picking'].create({
                 'reference': picking.id,
                 'partner_id': picking.partner_id.id,
-                'phone': picking.partner_id.mobile,
+                'phone': picking.partner_id.phone,
                 'zone': picking.partner_id.zone.id
             })
 
