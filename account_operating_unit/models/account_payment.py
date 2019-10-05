@@ -1,5 +1,5 @@
-# © 2016-17 Eficent Business and IT Consulting Services S.L.
-# © 2016 Serpent Consulting Services Pvt. Ltd.
+# © 2019 Eficent Business and IT Consulting Services S.L.
+# © 2019 Serpent Consulting Services Pvt. Ltd.
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).
 
 from odoo import api, fields, models, _
@@ -17,7 +17,8 @@ class AccountPayment(models.Model):
 
     operating_unit_id = fields.Many2one(
         'operating.unit', string='Operating Unit',
-        compute='_compute_operating_unit_id', readonly=True, store=True)
+        domain="[('user_ids', '=', uid)]",
+        compute='_compute_operating_unit_id', store=True)
 
     def _get_counterpart_move_line_vals(self, invoice=False):
         res = super(AccountPayment,
@@ -63,7 +64,7 @@ class AccountPayment(models.Model):
             })
         transfer_debit_aml_dict.update({
             'operating_unit_id':
-                self.journal_id.operating_unit_id.id or False
+                self.destination_journal_id.operating_unit_id.id or False
         })
         return transfer_debit_aml_dict
 
@@ -74,7 +75,7 @@ class AccountPayment(models.Model):
         aml_obj = self.env['account.move.line'].with_context(
             check_move_validity=False)
         debit, credit, amount_currency, dummy = aml_obj.with_context(
-            date=self.payment_date).compute_amount_fields(
+            date=self.payment_date)._compute_amount_fields(
             amount, self.currency_id, self.company_id.currency_id)
         amount_currency = self.destination_journal_id.currency_id \
             and self.currency_id.with_context(date=self.payment_date).compute(
